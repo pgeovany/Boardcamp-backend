@@ -13,13 +13,15 @@ async function addCategoryValidationMiddleware(req, res, next) {
   }
 
   try {
-    const { rows: nameExists } = await connection.query(
+    const { rows } = await connection.query(
       `
       SELECT * FROM categories where name = $1
     `,
       [name]
     );
-    if (nameExists.length) {
+    const nameExists = rows.length;
+
+    if (nameExists) {
       res.sendStatus(STATUS.CONFLICT);
       return;
     }
