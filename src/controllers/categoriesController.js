@@ -14,7 +14,20 @@ async function getCategories(req, res) {
 }
 
 async function addCategory(req, res) {
-  res.sendStatus(STATUS.OK);
+  const { name } = req.locals;
+
+  try {
+    await connection.query(
+      `
+      INSERT INTO categories (name) VALUES ($1)
+    `,
+      [name]
+    );
+
+    res.sendStatus(STATUS.CREATED);
+  } catch (error) {
+    res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
+  }
 }
 
 export { getCategories, addCategory };
