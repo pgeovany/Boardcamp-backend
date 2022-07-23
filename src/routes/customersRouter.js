@@ -16,6 +16,10 @@ customersRouter.post(
   addCustomerValidationMiddleware,
   addCustomer
 );
-customersRouter.put('/customers/:id', updateCustomer);
+customersRouter.put(
+  '/customers/:id',
+  addCustomerValidationMiddleware,
+  updateCustomer
+);
 
 export default customersRouter;

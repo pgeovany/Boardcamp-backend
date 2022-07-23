@@ -58,7 +58,22 @@ async function addCustomer(req, res) {
 }
 
 async function updateCustomer(req, res) {
-  res.sendStatus(STATUS.OK);
+  const { id } = req.params;
+  const { name, phone, cpf, birthday } = req.locals;
+
+  try {
+    await connection.query(
+      `
+        UPDATE customers SET (name, phone, cpf, birthday) = ($1, $2, $3, $4)
+        WHERE id = $5
+      `,
+      [name, phone, cpf, birthday, id]
+    );
+
+    res.sendStatus(STATUS.OK);
+  } catch (error) {
+    res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
+  }
 }
 
 export { getCustomers, getCustomerById, addCustomer, updateCustomer };
