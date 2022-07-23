@@ -5,12 +5,17 @@ import {
   addCustomer,
   updateCustomer,
 } from '../controllers/customersController.js';
+import addCustomerValidationMiddleware from '../middlewares/addCustomerValidationMiddleware.js';
 
 const customersRouter = Router();
 
 customersRouter.get('/customers', getCustomers);
 customersRouter.get('/customers/:id', getCustomerById);
-customersRouter.post('/customers', addCustomer);
+customersRouter.post(
+  '/customers',
+  addCustomerValidationMiddleware,
+  addCustomer
+);
 customersRouter.put('/customers/:id', updateCustomer);
 
 export default customersRouter;

@@ -1,6 +1,6 @@
 import STATUS from '../utils/statusCodes.js';
-import { addGameSchema } from '../utils/schemas.js';
 import connection from '../databases/postgresql.js';
+import { addGameSchema } from '../utils/schemas.js';
 
 async function addGameValidationMiddleware(req, res, next) {
   const game = req.body;
@@ -49,7 +49,6 @@ async function addGameValidationMiddleware(req, res, next) {
 
     next();
   } catch (error) {
-    console.log(error);
     res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
   }
 }

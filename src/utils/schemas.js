@@ -1,10 +1,13 @@
-import joi from 'joi';
+import JoiImport from 'joi';
+import DateExtension from '@joi/date';
+/* eslint no-magic-numbers: off */
+
+const joi = JoiImport.extend(DateExtension);
 
 const addCategorySchema = joi.object({
   name: joi.string().required(),
 });
 
-/* eslint no-magic-numbers: off */
 const addGameSchema = joi.object({
   name: joi.string().required(),
   image: joi
@@ -16,4 +19,22 @@ const addGameSchema = joi.object({
   pricePerDay: joi.number().greater(0).required(),
 });
 
-export { addCategorySchema, addGameSchema };
+const addCustomerSchema = joi.object({
+  name: joi.string().required(),
+  phone: joi
+    .string()
+    .pattern(/^[0-9]{10,11}$/)
+    .required(),
+  cpf: joi
+    .string()
+    .pattern(/^[0-9]{11}$/)
+    .required(),
+  birthday: joi
+    .date()
+    .format('YYYY-MM-DD')
+    .less('2015-01-01')
+    .greater('1923-01-01')
+    .required(),
+});
+
+export { addCategorySchema, addGameSchema, addCustomerSchema };

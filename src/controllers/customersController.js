@@ -40,7 +40,21 @@ async function getCustomerById(req, res) {
 }
 
 async function addCustomer(req, res) {
-  res.sendStatus(STATUS.OK);
+  const { name, phone, cpf, birthday } = req.locals;
+
+  try {
+    await connection.query(
+      `
+        INSERT INTO customers (name, phone, cpf, birthday) 
+        VALUES ($1, $2, $3, $4)
+      `,
+      [name, phone, cpf, birthday]
+    );
+
+    res.sendStatus(STATUS.CREATED);
+  } catch (error) {
+    res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
+  }
 }
 
 async function updateCustomer(req, res) {
