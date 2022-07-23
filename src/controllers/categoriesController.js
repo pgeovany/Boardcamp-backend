@@ -1,5 +1,5 @@
-import connection from '../databases/postgresql.js';
 import STATUS from '../utils/statusCodes.js';
+import connection from '../databases/postgresql.js';
 
 async function getCategories(req, res) {
   try {
