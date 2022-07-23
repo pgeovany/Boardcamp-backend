@@ -33,7 +33,8 @@ async function addGameValidationMiddleware(req, res, next) {
       [game.name]
     );
 
-    if (gameExists.length) {
+    // eslint-disable-next-line
+    if (gameExists.length > 0) {
       res.sendStatus(STATUS.CONFLICT);
       return;
     }
