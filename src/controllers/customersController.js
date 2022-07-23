@@ -19,7 +19,24 @@ async function getCustomers(req, res) {
 }
 
 async function getCustomerById(req, res) {
-  res.sendStatus(STATUS.OK);
+  const { id } = req.params;
+
+  try {
+    const { rows: customer } = await connection.query(
+      `SELECT * FROM customers WHERE id = $1`,
+      [id]
+    );
+
+    // eslint-disable-next-line
+    if (customer.length === 0) {
+      res.sendStatus(STATUS.NOT_FOUND);
+      return;
+    }
+
+    res.send(customer);
+  } catch (error) {
+    res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
+  }
 }
 
 async function addCustomer(req, res) {
