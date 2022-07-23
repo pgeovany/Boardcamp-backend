@@ -33,7 +33,7 @@ async function getCustomerById(req, res) {
       return;
     }
 
-    res.send(customer);
+    res.send(customer[0]);
   } catch (error) {
     res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
   }
