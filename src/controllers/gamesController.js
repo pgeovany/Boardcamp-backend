@@ -2,14 +2,20 @@ import STATUS from '../utils/statusCodes.js';
 import connection from '../databases/postgresql.js';
 
 async function getGames(req, res) {
+  const { name } = req.query;
+
   try {
-    const { rows: games } = await connection.query(
-      `
-        SELECT games.*, categories.name as "categoryName" FROM games
-        JOIN categories
-        ON games."categoryId" = categories.id
-      `
-    );
+    let query = `
+      SELECT games.*, categories.name as "categoryName" FROM games
+      JOIN categories
+      ON games."categoryId" = categories.id
+    `;
+
+    if (name) {
+      query += ` WHERE games.name ILIKE '${name}%'`;
+    }
+
+    const { rows: games } = await connection.query(query);
 
     res.send(games);
   } catch (error) {
