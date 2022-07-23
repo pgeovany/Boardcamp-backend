@@ -3,10 +3,10 @@ import { addGameSchema } from '../utils/schemas.js';
 import connection from '../databases/postgresql.js';
 
 async function addGameValidationMiddleware(req, res, next) {
-  const { name, image, stockTotal, categoryId, pricePerDay } = req.body;
+  const game = req.body;
 
   try {
-    await addGameSchema.validateAsync({ name, stockTotal, pricePerDay });
+    await addGameSchema.validateAsync(game);
   } catch (error) {
     res.sendStatus(STATUS.BAD_REQUEST);
     return;
@@ -17,7 +17,7 @@ async function addGameValidationMiddleware(req, res, next) {
       `
         SELECT * FROM categories WHERE id = $1
       `,
-      [categoryId]
+      [game.categoryId]
     );
 
     // eslint-disable-next-line
@@ -30,7 +30,7 @@ async function addGameValidationMiddleware(req, res, next) {
       `
         SELECT * FROM games WHERE name = $1
       `,
-      [name]
+      [game.name]
     );
 
     if (gameExists.length) {
@@ -39,11 +39,11 @@ async function addGameValidationMiddleware(req, res, next) {
     }
 
     req.locals = {
-      name,
-      image,
-      stockTotal,
-      categoryId,
-      pricePerDay,
+      name: game.name,
+      image: game.image,
+      stockTotal: game.stockTotal,
+      categoryId: game.categoryId,
+      pricePerDay: game.pricePerDay,
     };
 
     next();
