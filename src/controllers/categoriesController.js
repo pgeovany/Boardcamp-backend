@@ -1,12 +1,10 @@
 import STATUS from '../utils/statusCodes.js';
-import connection from '../databases/postgresql.js';
+import getCategoriesList from '../utils/categories/getCategoriesList.js';
+import insertCategory from '../utils/categories/insertCategory.js';
 
 async function getCategories(req, res) {
   try {
-    const { rows: categories } = await connection.query(`
-      SELECT * FROM categories
-    `);
-
+    const categories = await getCategoriesList();
     res.send(categories);
   } catch (error) {
     res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
@@ -17,13 +15,7 @@ async function addCategory(req, res) {
   const { name } = req.locals;
 
   try {
-    await connection.query(
-      `
-      INSERT INTO categories (name) VALUES ($1)
-    `,
-      [name]
-    );
-
+    await insertCategory(name);
     res.sendStatus(STATUS.CREATED);
   } catch (error) {
     res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
