@@ -2,7 +2,6 @@ import STATUS from '../utils/statusCodes.js';
 import { addRentalSchema } from '../utils/schemas.js';
 import connection from '../databases/postgresql.js';
 
-/* eslint no-magic-numbers: off */
 async function addRentalValidationMiddleware(req, res, next) {
   const rental = req.body;
 

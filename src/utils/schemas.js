@@ -1,6 +1,5 @@
 import JoiImport from 'joi';
 import DateExtension from '@joi/date';
-/* eslint no-magic-numbers: off */
 
 const joi = JoiImport.extend(DateExtension);
 

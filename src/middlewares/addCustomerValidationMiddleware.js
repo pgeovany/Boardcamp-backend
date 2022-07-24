@@ -20,7 +20,6 @@ async function addCustomerValidationMiddleware(req, res, next) {
       [customer.cpf]
     );
 
-    // eslint-disable-next-line
     if (cpfExists.length > 0) {
       res.sendStatus(STATUS.CONFLICT);
       return;

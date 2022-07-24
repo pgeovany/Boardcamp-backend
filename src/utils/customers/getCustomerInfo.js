@@ -6,7 +6,6 @@ async function getCustomerInfo(id) {
     [id]
   );
 
-  // eslint-disable-next-line
   if (rows.length === 0) {
     return false;
   }

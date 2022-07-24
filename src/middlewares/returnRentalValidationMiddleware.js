@@ -12,7 +12,6 @@ async function returnRentalValidationMiddleware(req, res, next) {
       [id]
     );
 
-    // eslint-disable-next-line
     if (rental.length === 0) {
       res.sendStatus(STATUS.NOT_FOUND);
       return;

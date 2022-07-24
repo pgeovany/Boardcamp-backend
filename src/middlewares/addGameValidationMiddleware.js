@@ -20,7 +20,6 @@ async function addGameValidationMiddleware(req, res, next) {
       [game.categoryId]
     );
 
-    // eslint-disable-next-line
     if (categoryExists.length === 0) {
       res.sendStatus(STATUS.BAD_REQUEST);
       return;
@@ -33,7 +32,6 @@ async function addGameValidationMiddleware(req, res, next) {
       [game.name]
     );
 
-    // eslint-disable-next-line
     if (gameExists.length > 0) {
       res.sendStatus(STATUS.CONFLICT);
       return;
