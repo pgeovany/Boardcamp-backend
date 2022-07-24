@@ -1,8 +1,16 @@
 import STATUS from '../utils/statusCodes.js';
 import insertRental from '../utils/rentals/insertRental.js';
+import getRentalList from '../utils/rentals/getRentalList.js';
 
 async function getRentals(req, res) {
-  res.sendStatus(STATUS.OK);
+  const { customerId, gameId } = req.query;
+
+  try {
+    const rentals = await getRentalList(customerId, gameId);
+    res.send(rentals);
+  } catch (error) {
+    res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
+  }
 }
 
 async function addRental(req, res) {
@@ -12,7 +20,6 @@ async function addRental(req, res) {
     await insertRental(customerId, gameId, daysRented);
     res.sendStatus(STATUS.CREATED);
   } catch (error) {
-    console.log(error);
     res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
   }
 }

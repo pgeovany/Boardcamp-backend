@@ -11,6 +11,7 @@
   "rules": {
     "no-console": "off",
     "import/extensions": "off",
-    "no-magic-numbers": "error"
+    "no-magic-numbers": "error",
+    "no-param-reassign": "off"
   }
 }
