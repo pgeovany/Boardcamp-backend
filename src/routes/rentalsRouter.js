@@ -6,12 +6,17 @@ import {
   removeRental,
 } from '../controllers/rentalsController.js';
 import addRentalValidationMiddleware from '../middlewares/addRentalValidationMiddleware.js';
+import returnRentalValidationMiddleware from '../middlewares/returnRentalValidationMiddleware.js';
 
 const rentalsRouter = Router();
 
 rentalsRouter.get('/rentals', getRentals);
 rentalsRouter.post('/rentals', addRentalValidationMiddleware, addRental);
-rentalsRouter.post('/rentals/:id/return', endRental);
+rentalsRouter.post(
+  '/rentals/:id/return',
+  returnRentalValidationMiddleware,
+  endRental
+);
 rentalsRouter.delete('/rentals/:id', removeRental);
 
 export default rentalsRouter;
