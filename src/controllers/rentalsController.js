@@ -3,6 +3,7 @@ import insertRental from '../utils/rentals/insertRental.js';
 import getRentalList from '../utils/rentals/getRentalList.js';
 import returnRental from '../utils/rentals/returnRental.js';
 import getRentalById from '../utils/rentals/getRentalById.js';
+import deleteRental from '../utils/rentals/deleteRental.js';
 
 async function getRentals(req, res) {
   const { customerId, gameId } = req.query;
@@ -40,7 +41,14 @@ async function endRental(req, res) {
 }
 
 async function removeRental(req, res) {
-  res.sendStatus(STATUS.OK);
+  const { id } = req.locals;
+
+  try {
+    await deleteRental(id);
+    res.sendStatus(STATUS.OK);
+  } catch (error) {
+    res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
+  }
 }
 
 export { getRentals, addRental, endRental, removeRental };

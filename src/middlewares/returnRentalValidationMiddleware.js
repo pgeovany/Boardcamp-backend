@@ -17,7 +17,7 @@ async function returnRentalValidationMiddleware(req, res, next) {
       return;
     }
 
-    // tests whether the game has already been returned by checking if the returnDate property
+    // verifies whether the game has already been returned by checking if the returnDate property
     // is not null
     if (rental[0].returnDate) {
       res.sendStatus(STATUS.BAD_REQUEST);
