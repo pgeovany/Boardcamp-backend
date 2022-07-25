@@ -1,6 +1,6 @@
 import STATUS from '../utils/statusCodes.js';
 import insertRental from '../utils/rentals/insertRental.js';
-import getRentalList from '../utils/rentals/getRentalList.js';
+import getRentalsList from '../utils/rentals/getRentalsList.js';
 import returnRental from '../utils/rentals/returnRental.js';
 import getRentalById from '../utils/rentals/getRentalById.js';
 import deleteRental from '../utils/rentals/deleteRental.js';
@@ -9,7 +9,7 @@ async function getRentals(req, res) {
   const { customerId, gameId } = req.query;
 
   try {
-    const rentals = await getRentalList(customerId, gameId);
+    const rentals = await getRentalsList(customerId, gameId);
     res.send(rentals);
   } catch (error) {
     res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);

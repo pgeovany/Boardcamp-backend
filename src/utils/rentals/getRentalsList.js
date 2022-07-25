@@ -1,6 +1,6 @@
 import connection from '../../databases/postgresql.js';
 
-async function getRentalList(customerId, gameId) {
+async function getRentalsList(customerId, gameId) {
   let query = `
     SELECT rentals.*,
       json_build_object('id', customers.id, 'name', customers.name) AS customer,
@@ -30,4 +30,4 @@ async function getRentalList(customerId, gameId) {
   return rentals;
 }
 
-export default getRentalList;
+export default getRentalsList;
