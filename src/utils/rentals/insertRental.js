@@ -16,7 +16,7 @@ async function insertRental(customerId, gameId, daysRented) {
     [customerId, gameId, currentDate, daysRented, originalPrice]
   );
 
-  await updateGameStock(gameId);
+  await updateGameStock(gameId, true);
 }
 
 export default insertRental;

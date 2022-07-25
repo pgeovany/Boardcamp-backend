@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import connection from '../../databases/postgresql.js';
+import updateGameStock from '../games/updateGameStock.js';
 import calculateDelayFee from './calculateDelayFee.js';
 
 async function returnRental(rental) {
@@ -13,6 +14,8 @@ async function returnRental(rental) {
     `,
     [currentDate, delayFee, rental.id]
   );
+
+  await updateGameStock(rental.gameId, false);
 }
 
 export default returnRental;
