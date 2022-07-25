@@ -1,25 +1,20 @@
 import STATUS from '../utils/statusCodes.js';
-import connection from '../databases/postgresql.js';
+import getRentalById from '../utils/rentals/getRentalById.js';
 
 async function returnRentalValidationMiddleware(req, res, next) {
   const { id } = req.params;
 
   try {
-    const { rows: rental } = await connection.query(
-      `
-        SELECT * FROM rentals WHERE id = $1
-      `,
-      [id]
-    );
+    const rental = await getRentalById(id);
 
-    if (rental.length === 0) {
+    if (!rental) {
       res.sendStatus(STATUS.NOT_FOUND);
       return;
     }
 
-    // verifies whether the game has already been returned by checking if the returnDate property
-    // is not null
-    if (rental[0].returnDate) {
+    // verifies if the game has not been returned yet by checking if the returnDate property
+    // has a value
+    if (rental.returnDate) {
       res.sendStatus(STATUS.BAD_REQUEST);
       return;
     }
@@ -30,7 +25,6 @@ async function returnRentalValidationMiddleware(req, res, next) {
 
     next();
   } catch (error) {
-    console.log(error);
     res.sendStatus(STATUS.INTERNAL_SERVER_ERROR);
   }
 }

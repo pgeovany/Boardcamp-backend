@@ -12,6 +12,8 @@ async function deleteRentalValidationMiddleware(req, res, next) {
       return;
     }
 
+    // verifies if the game has been returned by checking if the returnDate property
+    // has a value
     if (!rental.returnDate) {
       res.sendStatus(STATUS.BAD_REQUEST);
       return;
