@@ -1,17 +1,19 @@
 import connection from '../../databases/postgresql.js';
-import formatRentalList from './formatRentalList.js';
 
 async function getRentalList(customerId, gameId) {
   let query = `
-    SELECT rentals.*, customers.name AS "customerName",
-    games.name AS "gameName",
-    games."categoryId",
-    categories.name AS "categoryName" FROM rentals
+    SELECT rentals.*,
+      json_build_object('id', customers.id, 'name', customers.name) AS customer,
+
+      json_build_object('id', games.id, 'name', games.name, 'categoryId', games."categoryId",
+      'categoryName', categories.name) AS game
+
+    FROM rentals
     JOIN customers
     ON customers.id = rentals."customerId"
     JOIN games
     ON games.id = rentals."gameId"
-    JOIN categories
+    JOIN categories 
     ON games."categoryId" = categories.id
   `;
 
@@ -25,7 +27,7 @@ async function getRentalList(customerId, gameId) {
 
   const { rows: rentals } = await connection.query(query);
 
-  return formatRentalList(rentals);
+  return rentals;
 }
 
 export default getRentalList;
