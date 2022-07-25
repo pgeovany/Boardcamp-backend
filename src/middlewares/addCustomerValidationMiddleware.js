@@ -1,6 +1,6 @@
 import STATUS from '../utils/statusCodes.js';
-import connection from '../databases/postgresql.js';
 import { addCustomerSchema } from '../utils/schemas.js';
+import getCustomerByCpf from '../utils/customers/getCustomerByCpf.js';
 
 async function addCustomerValidationMiddleware(req, res, next) {
   const customer = req.body;
@@ -13,14 +13,9 @@ async function addCustomerValidationMiddleware(req, res, next) {
   }
 
   try {
-    const { rows: cpfExists } = await connection.query(
-      `
-        SELECT * FROM customers WHERE cpf = $1
-      `,
-      [customer.cpf]
-    );
+    const customerExists = await getCustomerByCpf(customer.cpf);
 
-    if (cpfExists.length > 0) {
+    if (customerExists) {
       res.sendStatus(STATUS.CONFLICT);
       return;
     }

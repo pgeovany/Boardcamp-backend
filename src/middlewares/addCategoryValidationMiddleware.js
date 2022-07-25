@@ -1,6 +1,6 @@
 import STATUS from '../utils/statusCodes.js';
-import connection from '../databases/postgresql.js';
 import { addCategorySchema } from '../utils/schemas.js';
+import getCategoryByName from '../utils/categories/getCategoryByName.js';
 
 async function addCategoryValidationMiddleware(req, res, next) {
   const { name } = req.body;
@@ -13,15 +13,9 @@ async function addCategoryValidationMiddleware(req, res, next) {
   }
 
   try {
-    const { rows } = await connection.query(
-      `
-      SELECT * FROM categories where name = $1
-      `,
-      [name]
-    );
-    const nameExists = rows.length;
+    const categoryExists = await getCategoryByName(name);
 
-    if (nameExists) {
+    if (categoryExists) {
       res.sendStatus(STATUS.CONFLICT);
       return;
     }

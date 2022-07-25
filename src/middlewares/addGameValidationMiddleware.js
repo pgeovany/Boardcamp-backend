@@ -1,6 +1,7 @@
 import STATUS from '../utils/statusCodes.js';
-import connection from '../databases/postgresql.js';
 import { addGameSchema } from '../utils/schemas.js';
+import getCategoryById from '../utils/categories/getCategoryById.js';
+import getGameByName from '../utils/games/getGameByName.js';
 
 async function addGameValidationMiddleware(req, res, next) {
   const game = req.body;
@@ -13,26 +14,16 @@ async function addGameValidationMiddleware(req, res, next) {
   }
 
   try {
-    const { rows: categoryExists } = await connection.query(
-      `
-        SELECT * FROM categories WHERE id = $1
-      `,
-      [game.categoryId]
-    );
+    const categoryExists = await getCategoryById(game.categoryId);
 
-    if (categoryExists.length === 0) {
+    if (!categoryExists) {
       res.sendStatus(STATUS.BAD_REQUEST);
       return;
     }
 
-    const { rows: gameExists } = await connection.query(
-      `
-        SELECT * FROM games WHERE name = $1
-      `,
-      [game.name]
-    );
+    const gameExists = await getGameByName(game.name);
 
-    if (gameExists.length > 0) {
+    if (gameExists) {
       res.sendStatus(STATUS.CONFLICT);
       return;
     }
